@@ -7,6 +7,7 @@
 #include "BaseAIController.generated.h"
 
 class UBaseAIPerceptionComponent;
+class UBlackboardComponent;
  
 UCLASS()
 class REACHTHETARGET_API ABaseAIController : public AAIController
@@ -16,11 +17,12 @@ class REACHTHETARGET_API ABaseAIController : public AAIController
 public:
 	ABaseAIController();
 
+
 protected:
 	virtual void OnPossess(APawn* InPawn) override;
-	//virtual void BeginPlay() override;
-	//virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Components")
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
 		UBaseAIPerceptionComponent* AIPerceptionComponent;
+
 };

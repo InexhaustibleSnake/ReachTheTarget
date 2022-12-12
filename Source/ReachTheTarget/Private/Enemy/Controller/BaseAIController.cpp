@@ -7,17 +7,16 @@
 ABaseAIController::ABaseAIController()
 {
 	AIPerceptionComponent = CreateDefaultSubobject<UBaseAIPerceptionComponent>("AIPerceptionComponent");
-	SetPerceptionComponent(*AIPerceptionComponent);
 }
 
 void ABaseAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
-	const auto Enemy = Cast<ABaseEnemy>(InPawn);
-	if (Enemy)
-	{
-		RunBehaviorTree(Enemy->BehaviorTreeAsset);
-	}
-
 	
+	ABaseEnemy* EnemyOwner = Cast<ABaseEnemy>(InPawn);
+	
+	if (EnemyOwner)
+	{
+		RunBehaviorTree(EnemyOwner->BehaviorTreeAsset);
+	}
 }

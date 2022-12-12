@@ -2,8 +2,9 @@
 
 #include "Enemy/Tasks/PatrolTask.h"
 #include "Enemy/BaseEnemy.h"
-#include "AIController.h"
+#include "Enemy/Controller/BaseAIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Enemy/Points/PatrolPoint.h"
 
 UPatrolTask::UPatrolTask()
 {
@@ -16,13 +17,23 @@ EBTNodeResult::Type UPatrolTask::ExecuteTask(UBehaviorTreeComponent& OwnerComp, 
 	const auto Blackboard = OwnerComp.GetBlackboardComponent();
 	if (!Controller || !Blackboard) return EBTNodeResult::Failed;
 
-	const auto EnemyPawn = Cast<ABaseEnemy>(Controller->GetPawn());
+	ABaseEnemy* Pawn = Cast<ABaseEnemy>(Controller->GetPawn());
+	if (!Pawn) return EBTNodeResult::Failed;
 
-	for (auto PatrolPoint : EnemyPawn->PatrolPoints) 
+	APatrolPoint* NextPatrolPoint = nullptr;
+
+	TArray<AActor*> AvaiblePatrolPoints = Pawn->GetPatrolPoints();
+
+	if (Pawn->CurrentPatrolPoint != Pawn->GetPatrolPoints().Num() - 1)
 	{
-		Blackboard->SetValueAsVector(PatrolKey.SelectedKeyName, PatrolPoint->GetActorLocation());
-
+		NextPatrolPoint = Cast<APatrolPoint>(AvaiblePatrolPoints[++Pawn->CurrentPatrolPoint]);
 	}
+	else
+	{
+		NextPatrolPoint = Cast<APatrolPoint>(AvaiblePatrolPoints[0]);
+		Pawn->CurrentPatrolPoint = 0;
+	}
+
+	Blackboard->SetValueAsVector(PatrolKey.SelectedKeyName, NextPatrolPoint->GetActorLocation());
 	return EBTNodeResult::Succeeded;
-	
 }

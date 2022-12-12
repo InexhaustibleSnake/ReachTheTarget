@@ -6,7 +6,6 @@
 #include "BehaviorTree/BTTaskNode.h"
 #include "PatrolTask.generated.h"
 
-
 UCLASS()
 class REACHTHETARGET_API UPatrolTask : public UBTTaskNode
 {
@@ -21,5 +20,6 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI")
 		FBlackboardKeySelector PatrolKey;
+
 
 };

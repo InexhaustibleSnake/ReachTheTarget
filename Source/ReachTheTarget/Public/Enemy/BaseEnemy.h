@@ -16,18 +16,16 @@ class REACHTHETARGET_API ABaseEnemy : public ACharacter
 public:
 	ABaseEnemy();
 	virtual void Tick(float DeltaTime) override;
-
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
-		UBehaviorTree* BehaviorTreeAsset;
+	FORCEINLINE TArray<AActor*> GetPatrolPoints() const { return PatrolPoints; }
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "AI Movement")
 		TArray<AActor*> PatrolPoints;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "AI")
+		UBehaviorTree* BehaviorTreeAsset;
 
-
+	int32 CurrentPatrolPoint = 0;
 
 protected:
 	virtual void BeginPlay() override;
-
-	void GetAllPatrolPoints();
 };
